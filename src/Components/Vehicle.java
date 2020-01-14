@@ -4,10 +4,18 @@ public class Vehicle {
     int id;
     Battery battery;
     String vehicleType;
+    ChargingType chargingType;
+    Phases phases ;
 
-    public Vehicle(Battery battery, String vehicleType) {
+    public Vehicle(Battery battery, String vehicleType, ChargingType chargingType) {
         this.battery = battery;
         this.vehicleType = vehicleType;
+        this.chargingType = chargingType;
+        if(chargingType == ChargingType.DC){
+            phases = Phases.three;
+        } else {
+            phases = null;
+        }
     }
 
     public String getVehicleType() {

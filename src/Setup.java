@@ -1,10 +1,13 @@
 import Components.ChargingPoint;
 import Components.ChargingStation;
 
+import java.util.ArrayList;
+
 public class Setup {
     public static void main(String[] args){
-        ChargingStation station = new ChargingStation("FH OOE Hagenberg");
+        ArrayList<ChargingStation> stations = HagenbergSimulationFactory.setupEnvironmentHagenberg();
 
 
+        while (true);
     }
 }

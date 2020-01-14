@@ -6,9 +6,12 @@ public class ChargingPoint {
     ChargingProcess chargingProcess;
     boolean inUse = false;
 
-    public ChargingPoint() {}
+    public ChargingPoint(int id) {
+        this.id = id;
+    }
 
-    public ChargingPoint(Vehicle vehicle) {
+    public ChargingPoint(int id, Vehicle vehicle) {
+        this.id = id;
         this.vehicle = vehicle;
     }
 

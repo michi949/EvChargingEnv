@@ -8,8 +8,10 @@ public class ChargingStation {
     ArrayList<ChargingPoint> chargingPoints;
 
 
-    public ChargingStation(String owner) {
+    public ChargingStation(int id, String owner) {
+        this.id = id;
         this.owner = owner;
+        chargingPoints = new ArrayList<>();
     }
 
     /**
@@ -45,4 +47,5 @@ public class ChargingStation {
     public void setChargingPoints(ArrayList<ChargingPoint> chargingPoints) {
         this.chargingPoints = chargingPoints;
     }
+
 }

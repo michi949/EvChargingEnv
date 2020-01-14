@@ -26,6 +26,10 @@ public class ChargingProcess extends Thread {
 
     public void setChargingSpeed(double chargingSpeed) {
         this.chargingSpeed = chargingSpeed;
+        this.estimatePossibleEndDate();
+        if(this.isCharging()){
+            //todo change calculation
+        }
     }
 
     public Vehicle getVehicle() {
@@ -113,7 +117,7 @@ public class ChargingProcess extends Thread {
     /**
      * Converting the double time in a date format to add it to the start date.
      * @param intervalToChargingEnd Given interval to the end in double.
-     * @return The interval in a Date format. 
+     * @return The interval in a Date format.
      */
     private Date convertDoubleToDate(double intervalToChargingEnd){
         String s = String.format("%06d", (int)intervalToChargingEnd);

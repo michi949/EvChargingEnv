@@ -6,6 +6,8 @@ public class ChargingPoint {
     ChargingProcess chargingProcess;
     boolean inUse = false;
 
+    public ChargingPoint() {}
+
     public ChargingPoint(Vehicle vehicle) {
         this.vehicle = vehicle;
     }

@@ -4,10 +4,12 @@ public class Battery {
     int id;
     double currentCapacity;
     double capacity;
+    double leftOverCapacity;
 
     public Battery(double currentCapacity, double capacity) {
         this.currentCapacity = currentCapacity;
         this.capacity = capacity;
+        this.setLeftOverCapacity();
     }
 
     public int getId() {
@@ -32,5 +34,13 @@ public class Battery {
 
     public void setCapacity(double capacity) {
         this.capacity = capacity;
+    }
+
+    public double getLeftOverCapacity() {
+        return leftOverCapacity;
+    }
+
+    public void setLeftOverCapacity() {
+        this.leftOverCapacity = capacity - currentCapacity;
     }
 }

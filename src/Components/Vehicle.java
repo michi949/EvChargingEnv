@@ -33,4 +33,6 @@ public class Vehicle {
     public void setBattery(Battery battery) {
         this.battery = battery;
     }
+
+
 }

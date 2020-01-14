@@ -7,14 +7,17 @@ public class ChargingStation {
     String owner;
     ArrayList<ChargingPoint> chargingPoints;
 
+
+    public ChargingStation(String owner) {
+        this.owner = owner;
+    }
+
     /**
      * Charging station can only be created with those informations.
-     * @param id The identifyer of the station and get be used for multiple stations.
      * @param owner The owner of the station.
      * @param chargingPoints Connected charging points to the station, could be multiple.
      */
-    public ChargingStation(int id, String owner, ArrayList<ChargingPoint> chargingPoints) {
-        this.id = id;
+    public ChargingStation(String owner, ArrayList<ChargingPoint> chargingPoints) {
         this.owner = owner;
         this.chargingPoints = chargingPoints;
     }

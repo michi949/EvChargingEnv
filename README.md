@@ -22,7 +22,7 @@ The charging point is attached on a charging station and contains a vehicle and 
 ```
 ChargingPoint point = new ChargingPoint(1);
 //or
-ChargingPoint point = new ChargingPoint(1, new Vehicle(new Battery(currentCapacity, capacity), "Renault Zoe", ChargingType.DC));
+ChargingPoint point = new ChargingPoint(1, new Vehicle(new Battery(currentCapacity, capacity), "Renault Zoe", ChargingType.AC));
 //Manage the vehicle
 point.addVehicleToPoint(HagenbergSimulationFactory.setupRenaultZoe());
 point.setDefaultChargingSpeed(12000);

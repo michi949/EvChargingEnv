@@ -14,6 +14,7 @@ public class ChargingProcess extends Thread {
     private double chargingSpeed;
     private Vehicle vehicle;
     private boolean isCharging;
+    private boolean isActive;
     private Timer timer;
 
     public ChargingProcess(double chargingSpeed, Vehicle vehicle) {

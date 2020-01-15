@@ -1,11 +1,14 @@
 package Components;
 
+import Components.Enums.ChargingType;
+import Components.Enums.Phases;
+
 public class Vehicle {
-    int id;
-    Battery battery;
-    String vehicleType;
-    ChargingType chargingType;
-    Phases phases ;
+    private int id;
+    private Battery battery;
+    private String vehicleType;
+    private ChargingType chargingType;
+    private Phases phases ;
 
     public Vehicle(Battery battery, String vehicleType, ChargingType chargingType) {
         this.battery = battery;
@@ -42,5 +45,29 @@ public class Vehicle {
         this.battery = battery;
     }
 
+    public ChargingType getChargingType() {
+        return chargingType;
+    }
 
+    public void setChargingType(ChargingType chargingType) {
+        this.chargingType = chargingType;
+    }
+
+    public Phases getPhases() {
+        if(chargingType == ChargingType.DC){
+            return phases;
+        } else {
+            System.out.println("Not able to get phases on a AC vehicle.");
+            return null;
+        }
+    }
+
+    public void setPhases(Phases phases) {
+        if(chargingType == ChargingType.DC){
+            this.phases = phases;
+        } else {
+            System.out.println("Not able to set phases on a AC vehicle.");
+            return;
+        }
+    }
 }

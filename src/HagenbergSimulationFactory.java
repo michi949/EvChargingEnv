@@ -1,7 +1,7 @@
 import Components.*;
+import Components.Enums.ChargingType;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class HagenbergSimulationFactory {
 

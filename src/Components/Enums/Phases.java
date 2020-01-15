@@ -1,4 +1,4 @@
-package Components;
+package Components.Enums;
 
 public enum Phases{
     one,

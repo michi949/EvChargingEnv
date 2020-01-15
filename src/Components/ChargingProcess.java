@@ -4,15 +4,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChargingProcess extends Thread {
-    int id;
-    Date startDate;
-    Date updateDate;
-    Date estimatedEndDate;
-    double chargingSpeed;
-    Vehicle vehicle;
-    boolean isCharging;
+    private Date startDate;
+    private Date updateDate;
+    private Date estimatedEndDate;
+    private double chargingSpeed;
+    private Vehicle vehicle;
+    private boolean isCharging;
+    private Timer timer;
 
     public ChargingProcess(double chargingSpeed, Vehicle vehicle) {
         this.chargingSpeed = chargingSpeed;
@@ -80,11 +82,19 @@ public class ChargingProcess extends Thread {
             return;
         }
 
-        System.out.println("Starting charging process with speed " + chargingSpeed);
+
     }
 
     public void startChargingProcess(){
         startDate = new Date();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Fuck!");
+            }
+        };
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
     }
 
     public void stopChargingProcess(){

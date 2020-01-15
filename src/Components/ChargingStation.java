@@ -1,11 +1,13 @@
 package Components;
 
+import Components.Enums.ChargingType;
+
 import java.util.ArrayList;
 
 public class ChargingStation {
-    int id;
-    String owner;
-    ArrayList<ChargingPoint> chargingPoints;
+    private int id;
+    private String owner;
+    private ArrayList<ChargingPoint> chargingPoints;
 
 
     public ChargingStation(int id, String owner) {
@@ -48,4 +50,16 @@ public class ChargingStation {
         this.chargingPoints = chargingPoints;
     }
 
+    /**
+     * Loops over all charging points of the station and returns the first free point.
+     * @return A free ChargingPoint.
+     */
+    public ChargingPoint getNextFreeChargingPoint(){
+        for(ChargingPoint point : chargingPoints){
+            if(!point.isInUse()){
+                return point;
+            }
+        }
+        return null;
+    }
 }

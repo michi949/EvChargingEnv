@@ -1,10 +1,10 @@
 package Components;
 
 public class Battery {
-    int id;
-    double currentCapacity;
-    double capacity;
-    double leftOverCapacity;
+    private int id;
+    private double currentCapacity;
+    private double capacity;
+    private double leftOverCapacity;
 
     public Battery(double currentCapacity, double capacity) {
         this.currentCapacity = currentCapacity;

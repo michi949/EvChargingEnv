@@ -1,26 +1,25 @@
 package Components;
 
 public class ChargingPoint {
-    int id;
-    Vehicle vehicle;
-    ChargingProcess chargingProcess;
-    boolean inUse = false;
+    private int id;
+    private Vehicle vehicle;
+    private boolean inUse = false;
+    private double defaultChargingSpeed; //Value in W
+    private ChargingProcess chargingProcess;
 
     public ChargingPoint(int id) {
+        this.defaultChargingSpeed = 22000;
         this.id = id;
     }
 
     public ChargingPoint(int id, Vehicle vehicle) {
+        this.defaultChargingSpeed = 22000;
         this.id = id;
         this.vehicle = vehicle;
     }
 
     public Vehicle getVehicle() {
         return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
     }
 
     public ChargingProcess getChargingProcess() {
@@ -45,5 +44,84 @@ public class ChargingPoint {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getDefaultChargingSpeed() {
+        return defaultChargingSpeed;
+    }
+
+    public void setDefaultChargingSpeed(double defaultChargingSpeed) {
+        this.defaultChargingSpeed = defaultChargingSpeed;
+    }
+
+    public boolean addVehicleToPoint(Vehicle vehicle){
+        if(isInUse()){
+            return false;
+        }
+
+        this.vehicle = vehicle;
+        setInUse(true);
+        return true;
+    }
+
+    public boolean removeVehicleFromPoint(){
+        if(!isInUse() && this.chargingProcess != null){
+            return false;
+        }
+
+        this.vehicle = null;
+        setInUse(false);
+        return true;
+    }
+
+    public boolean startCharging(){
+        if(!isInUse() && this.vehicle == null){
+            return false;
+        }
+
+        setChargingProcess(new ChargingProcess(defaultChargingSpeed, this.vehicle));
+        getChargingProcess().startChargingProcess();
+
+        return true;
+    }
+
+    public boolean pauseCharging(){
+        if(!isInUse() && this.vehicle == null && this.chargingProcess == null){
+            return false;
+        }
+
+        getChargingProcess().stopChargingProcess();
+
+        return true;
+    }
+
+    public boolean continueCharging(){
+        if(!isInUse() && this.vehicle == null && this.chargingProcess == null){
+            return false;
+        }
+
+        getChargingProcess().startChargingProcess();
+
+        return true;
+    }
+
+    public boolean stopCharging(){
+        if(!isInUse() && this.vehicle == null && this.chargingProcess == null){
+            return false;
+        }
+
+        getChargingProcess().stopChargingProcess();
+        setChargingProcess(null);
+        return true;
+    }
+
+    public boolean changeChargingSpeedOnPoint(double chargingSpeed){
+        if(!isInUse() && this.vehicle == null && this.chargingProcess == null){
+            return false;
+        }
+
+        getChargingProcess().setChargingSpeed(chargingSpeed);
+
+        return true;
     }
 }

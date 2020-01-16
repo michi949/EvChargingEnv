@@ -15,6 +15,5 @@ public class Setup {
         point.setDefaultChargingSpeed(12000);
         point.startCharging();
 
-        while (true);
     }
 }

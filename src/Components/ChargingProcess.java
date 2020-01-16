@@ -3,9 +3,7 @@ package Components;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ChargingProcess extends Thread {
     private Date startDate;
@@ -16,11 +14,18 @@ public class ChargingProcess extends Thread {
     private boolean isCharging;
     private boolean isActive;
     private Timer timer;
+    private TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            if(isCharging()){
+                System.out.println(new Date());
+            }
+        }
+    };
 
     public ChargingProcess(double chargingSpeed, Vehicle vehicle) {
         this.chargingSpeed = chargingSpeed;
         this.vehicle = vehicle;
-        this.start();
     }
 
     public double getChargingSpeed() {
@@ -75,27 +80,18 @@ public class ChargingProcess extends Thread {
         isCharging = charging;
     }
 
-    /**
-     * Starting a thread for the charging process.
-     */
-    public void run() {
-        if(chargingSpeed == 0.0 && vehicle == null){
+
+    public void startChargingProcess(){
+        if(chargingSpeed == 0 || vehicle == null){
             return;
         }
 
-
-    }
-
-    public void startChargingProcess(){
+        setCharging(true);
         startDate = new Date();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Fuck!");
-            }
-        };
         timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
+        this.estimatePossibleEndDate();
+        this.start();
     }
 
     public void stopChargingProcess(){
@@ -115,13 +111,16 @@ public class ChargingProcess extends Thread {
      * ChargingTime = BatteryCapacity / ChargingPower
      */
     public void estimatePossibleEndDate(){
-        double intervalToChargingEnd = vehicle.getBattery().getCapacity() / this.getChargingSpeed();
+        System.out.println(vehicle.getBattery().getLeftOverCapacity());
+        System.out.println(this.getChargingSpeed());
+        double intervalToChargingEnd = vehicle.getBattery().getLeftOverCapacity() / this.getChargingSpeed();
         Date intervalDate = convertDoubleToDate(intervalToChargingEnd);
         if(intervalDate == null){
             System.out.println("Estimating the possible end Date is not possible.");
         } else {
             long sum = startDate.getTime() + intervalDate.getTime();
             estimatedEndDate = new Date(sum);
+            System.out.println("The estimated end time for the session " + estimatedEndDate);
         }
     }
 
@@ -131,13 +130,56 @@ public class ChargingProcess extends Thread {
      * @return The interval in a Date format.
      */
     private Date convertDoubleToDate(double intervalToChargingEnd){
-        String s = String.format("%06d", (int)intervalToChargingEnd);
-        DateFormat format = new SimpleDateFormat("HHmmss");
+        Map<Integer, String> map = splitDoubleString(String.valueOf(intervalToChargingEnd));
+
+        DateFormat hoursFormat = new SimpleDateFormat("HH");
+        DateFormat minutesFormat = new SimpleDateFormat("mm");
+        DateFormat secondsFormat = new SimpleDateFormat("ss");
+        DateFormat milisecondsFormat = new SimpleDateFormat("SSS");
         try {
-            return format.parse(s);
+            Date hoursDate  = hoursFormat.parse(map.get(1));
+            Date minutesDate  = minutesFormat.parse(map.get(2));
+            Date secondsDate  = secondsFormat.parse(map.get(3));
+            Date millisecondsDate = milisecondsFormat.parse(map.get(4));
+
+            System.out.println(hoursDate.getTime() + " " + minutesDate.getTime());
+            Date date = new Date(hoursDate.getTime() + minutesDate.getTime() + secondsDate.getTime() + millisecondsDate.getTime());
+            return date;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    private Map<Integer, String> splitDoubleString(String s){
+        Map<Integer, String> map = new HashMap<>();
+        String[] array = s.split("\\.");
+        String hour;
+        StringBuilder minutes = new StringBuilder();
+        StringBuilder seconds = new StringBuilder();
+        StringBuilder milliseconds = new StringBuilder();
+
+        hour = array[0];
+        if(hour.length() == 1){
+            hour = "0" + hour;
+        }
+
+        String[] leftOver = array[1].split("");
+        for(int i = 0; i < leftOver.length; i++){
+            if(i < 2){
+                minutes.append(leftOver[i]);
+            } else if(i < 4){
+                seconds.append(leftOver[i]);
+            } else {
+                milliseconds.append(leftOver[i]);
+            }
+        }
+
+        map.put(1, hour);
+        map.put(2, minutes.toString());
+        map.put(3, seconds.toString());
+        map.put(4, milliseconds.toString());
+        return map;
+    }
+
 }

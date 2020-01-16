@@ -14,7 +14,7 @@ public class Vehicle {
         this.battery = battery;
         this.vehicleType = vehicleType;
         this.chargingType = chargingType;
-        if(chargingType == ChargingType.DC){
+        if(chargingType == ChargingType.AC){
             phases = Phases.three;
         } else {
             phases = null;
@@ -54,7 +54,7 @@ public class Vehicle {
     }
 
     public Phases getPhases() {
-        if(chargingType == ChargingType.DC){
+        if(chargingType == ChargingType.AC){
             return phases;
         } else {
             System.out.println("Not able to get phases on a AC vehicle.");
@@ -63,7 +63,7 @@ public class Vehicle {
     }
 
     public void setPhases(Phases phases) {
-        if(chargingType == ChargingType.DC){
+        if(chargingType == ChargingType.AC){
             this.phases = phases;
         } else {
             System.out.println("Not able to set phases on a AC vehicle.");

@@ -1,5 +1,7 @@
 package Components;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +20,14 @@ public class ChargingProcess extends Thread {
         @Override
         public void run() {
             if(isCharging()){
-                System.out.println(new Date());
+                if(vehicle.getBattery().getCurrentCapacity() >= vehicle.getBattery().getCapacity()){
+                    finishChargingProcess();
+                }
+
+                double currentCapacity = vehicle.getBattery().getCurrentCapacity();
+                double chargingSpeedPerSec = chargingSpeed / 3600;
+                vehicle.getBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
+                System.out.println("Current capactity of the vehicle: " + round(vehicle.getBattery().getCurrentCapacity(), 2) + "kWh from: " + round(vehicle.getBattery().getCapacity(), 2) + "kWh.");
             }
         }
     };
@@ -80,6 +89,9 @@ public class ChargingProcess extends Thread {
         isCharging = charging;
     }
 
+    public void changeChargingSpeed(double chargingSpeed){
+        this.chargingSpeed = chargingSpeed;
+    }
 
     public void startChargingProcess(){
         if(chargingSpeed == 0 || vehicle == null){
@@ -88,22 +100,24 @@ public class ChargingProcess extends Thread {
 
         setCharging(true);
         startDate = new Date();
-        timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
+        if(timer == null){
+            timer = new Timer();
+            timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
+        }
         this.estimatePossibleEndDate();
+        System.out.println("Charging process start time: " + startDate);
         this.start();
     }
 
     public void stopChargingProcess(){
-
+        System.out.println("Charging process stop time: " + new Date());
+        isCharging = false;
     }
 
-    public void pauseChargingProcess(){
-
-    }
-
-    public void updateCurrentBatteryCapacity(){
-
+    public void finishChargingProcess(){
+        isCharging = false;
+        timer.purge();
+        System.out.println("Charging process has ended at " + new Date() + "and has a current capacity of " + vehicle.getBattery().getCurrentCapacity());
     }
 
     /**
@@ -111,8 +125,8 @@ public class ChargingProcess extends Thread {
      * ChargingTime = BatteryCapacity / ChargingPower
      */
     public void estimatePossibleEndDate(){
-        System.out.println(vehicle.getBattery().getLeftOverCapacity());
-        System.out.println(this.getChargingSpeed());
+        //System.out.println(vehicle.getBattery().getLeftOverCapacity());
+        //System.out.println(this.getChargingSpeed());
         double intervalToChargingEnd = vehicle.getBattery().getLeftOverCapacity() / this.getChargingSpeed();
         Date intervalDate = convertDoubleToDate(intervalToChargingEnd);
         if(intervalDate == null){
@@ -133,17 +147,21 @@ public class ChargingProcess extends Thread {
         Map<Integer, String> map = splitDoubleString(String.valueOf(intervalToChargingEnd));
 
         DateFormat hoursFormat = new SimpleDateFormat("HH");
+        hoursFormat.setTimeZone(TimeZone.getTimeZone("MEZ"));
         DateFormat minutesFormat = new SimpleDateFormat("mm");
+        minutesFormat.setTimeZone(TimeZone.getTimeZone("MEZ"));
         DateFormat secondsFormat = new SimpleDateFormat("ss");
+        secondsFormat.setTimeZone(TimeZone.getTimeZone("MEZ"));
         DateFormat milisecondsFormat = new SimpleDateFormat("SSS");
+        milisecondsFormat.setTimeZone(TimeZone.getTimeZone("MEZ"));
         try {
-            Date hoursDate  = hoursFormat.parse(map.get(1));
-            Date minutesDate  = minutesFormat.parse(map.get(2));
-            Date secondsDate  = secondsFormat.parse(map.get(3));
-            Date millisecondsDate = milisecondsFormat.parse(map.get(4));
+            long hoursDate  = hoursFormat.parse(map.get(1)).getTime();
+            long minutesDate  = minutesFormat.parse(map.get(2)).getTime();
+            long secondsDate  = secondsFormat.parse(map.get(3)).getTime();
 
-            System.out.println(hoursDate.getTime() + " " + minutesDate.getTime());
-            Date date = new Date(hoursDate.getTime() + minutesDate.getTime() + secondsDate.getTime() + millisecondsDate.getTime());
+            //System.out.println(hoursDate.getTime() + " " + minutesDate.getTime() + " " + secondsDate.getTime() );
+            //long dateLong = hoursDate.getTime() + minutesDate.getTime() + secondsDate.getTime() + millisecondsDate.getTime();
+            Date date = new Date((hoursDate + minutesDate + secondsDate) - 3600000);
             return date;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -182,4 +200,12 @@ public class ChargingProcess extends Thread {
         return map;
     }
 
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

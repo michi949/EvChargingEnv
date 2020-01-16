@@ -10,10 +10,17 @@ public class Setup {
         stations.get(0).getChargingPoints().get(0).addVehicleToPoint(HagenbergSimulationFactory.setupTeslaModel3());
         stations.get(0).getChargingPoints().get(0).startCharging();
 
+
         ChargingPoint point = stations.get(1).getNextFreeChargingPoint();
         point.addVehicleToPoint(HagenbergSimulationFactory.setupRenaultZoe());
         point.setDefaultChargingSpeed(12000);
-        point.startCharging();
+        //point.startCharging();
 
+        try {
+            Thread.sleep(300000);
+            stations.get(0).getChargingPoints().get(0).pauseCharging();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

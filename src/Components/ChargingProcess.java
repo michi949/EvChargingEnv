@@ -82,9 +82,13 @@ public class ChargingProcess extends Thread {
     }
 
     public void changeChargingSpeed(double chargingSpeed){
-        startDate = new Date();
-        estimatePossibleEndDate();
-        System.out.println("Change charging speed to: " + chargingSpeed + "kW. New estimated end time is " + estimatedEndDate);
+        if(!isCharging()){
+            System.out.println("Charging speed changed to: " + chargingSpeed + "kW.");
+        } else {
+            startDate = new Date();
+            estimatePossibleEndDate();
+            System.out.println("Change charging speed to: " + chargingSpeed + "kW. New estimated end time is " + estimatedEndDate);
+        }
         this.chargingSpeed = chargingSpeed;
     }
 
@@ -156,7 +160,7 @@ public class ChargingProcess extends Thread {
 
             //System.out.println(hoursDate.getTime() + " " + minutesDate.getTime() + " " + secondsDate.getTime() );
             //long dateLong = hoursDate.getTime() + minutesDate.getTime() + secondsDate.getTime() + millisecondsDate.getTime();
-            Date date = new Date((hoursDate + minutesDate + secondsDate) - 3600000);
+            Date date = new Date((hoursDate + minutesDate + secondsDate));
             return date;
         } catch (ParseException e) {
             e.printStackTrace();

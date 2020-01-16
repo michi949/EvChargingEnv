@@ -120,7 +120,7 @@ public class ChargingPoint {
             return false;
         }
 
-        getChargingProcess().setChargingSpeed(chargingSpeed);
+        getChargingProcess().changeChargingSpeed(chargingSpeed);
 
         return true;
     }

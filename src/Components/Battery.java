@@ -26,6 +26,7 @@ public class Battery {
 
     public void setCurrentCapacity(double currentCapacity) {
         this.currentCapacity = currentCapacity;
+        setLeftOverCapacity();
     }
 
     public double getCapacity() {

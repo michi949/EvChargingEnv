@@ -41,14 +41,6 @@ public class ChargingProcess extends Thread {
         return chargingSpeed;
     }
 
-    public void setChargingSpeed(double chargingSpeed) {
-        this.chargingSpeed = chargingSpeed;
-        this.estimatePossibleEndDate();
-        if(this.isCharging()){
-            //todo change calculation
-        }
-    }
-
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -90,6 +82,9 @@ public class ChargingProcess extends Thread {
     }
 
     public void changeChargingSpeed(double chargingSpeed){
+        startDate = new Date();
+        estimatePossibleEndDate();
+        System.out.println("Change charging speed to: " + chargingSpeed + "kW. New estimated end time is " + estimatedEndDate);
         this.chargingSpeed = chargingSpeed;
     }
 
@@ -105,7 +100,7 @@ public class ChargingProcess extends Thread {
             timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
         }
         this.estimatePossibleEndDate();
-        System.out.println("Charging process start time: " + startDate);
+        System.out.println("Charging process start time: " + startDate + "with speed " + chargingSpeed + "kW and estimated end time is " + estimatedEndDate);
         this.start();
     }
 
@@ -134,7 +129,7 @@ public class ChargingProcess extends Thread {
         } else {
             long sum = startDate.getTime() + intervalDate.getTime();
             estimatedEndDate = new Date(sum);
-            System.out.println("The estimated end time for the session " + estimatedEndDate);
+            //System.out.println("The estimated end time for the session " + estimatedEndDate);
         }
     }
 

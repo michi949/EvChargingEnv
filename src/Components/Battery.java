@@ -44,4 +44,8 @@ public class Battery {
     public void setLeftOverCapacity() {
         this.leftOverCapacity = capacity - currentCapacity;
     }
+
+    public int getCurrentCapacityInPercent(){
+        return (int) ((currentCapacity/capacity)*100);
+    }
 }

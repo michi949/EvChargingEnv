@@ -14,7 +14,8 @@ public class ChargingProcess extends Thread {
     private double chargingSpeed;
     private Vehicle vehicle;
     private boolean isCharging;
-    private boolean isActive;
+    int lastLogUpdate = 0;
+
     private Timer timer;
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -27,7 +28,11 @@ public class ChargingProcess extends Thread {
                 double currentCapacity = vehicle.getBattery().getCurrentCapacity();
                 double chargingSpeedPerSec = chargingSpeed / 3600;
                 vehicle.getBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
-                System.out.println("Current capactity of the vehicle: " + round(vehicle.getBattery().getCurrentCapacity(), 2) + "kWh from: " + round(vehicle.getBattery().getCapacity(), 2) + "kWh.");
+                if(lastLogUpdate < vehicle.getBattery().getCurrentCapacityInPercent()){
+                    System.out.println("Current charging state is: " + vehicle.getBattery().getCurrentCapacityInPercent() + "%");
+                    lastLogUpdate = vehicle.getBattery().getCurrentCapacityInPercent();
+                    //System.out.println("Current capactity of the vehicle: " + round(vehicle.getBattery().getCurrentCapacity(), 2) + "kWh from: " + round(vehicle.getBattery().getCapacity(), 2) + "kWh.");
+                }
             }
         }
     };

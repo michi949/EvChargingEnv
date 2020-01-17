@@ -18,7 +18,7 @@ public class Setup {
 
         try {
             Thread.sleep(180000);
-            point.changeChargingSpeedOnPoint(12000);
+            //point.changeChargingSpeedOnPoint(12000);
             //stations.get(0).getChargingPoints().get(0).pauseCharging();
         } catch (InterruptedException e) {
             e.printStackTrace();

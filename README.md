@@ -29,14 +29,52 @@ point.setDefaultChargingSpeed(12000);
 point.startCharging();
 ```
 
-### Vehicle
-
-### Battery
+### Vehicle and Battery
+A vehicle stores a battery and it is possible to set the charging technology of the vehicle. To identify the vehicle it is possible to set a number plate. The battery stores the current capacity, the left overt to charge and the overall capacity.
+It is possible to calculate the current battery capacity in percent.
+```
+      double capacity = 22000;
+      double currentCapacity = 8000;
+      Vehicle vehicle = new Vehicle(new Battery(currentCapacity, capacity), "Renault Zoe", "GM-235FE", ChargingType.AC);
+```
 
 ### Charging Process
+The charging process is running in an own thread and will update ever second the current capacity of the attached battery.
+It will also calculate the estimated end time and check frequently if the charging goal is reached.
+```
+setChargingProcess(new ChargingProcess(defaultChargingSpeed, this.vehicle));
+getChargingProcess().startChargingProcess();
+```
+A charging process will be created atomically when the charging point start charging function is called. With the the given default speed of the the charging point. It is possible to change the default speed before the running one. When a process is running it is possible to change the current charging speed.
+```
+point.setDefaultChargingSpeed(22000);
+point.startCharging();
+point.changeChargingSpeedOnPoint(12000);
+```
 
 ## Usage
+A quick example how to use the library, i created a factory for my usage where i create some vehicles with the real specifications to test.
+```
+public static void main(String[] args){
+        ArrayList<ChargingStation> stations = HagenbergSimulationFactory.setupEnvironmentHagenberg();
 
+        stations.get(0).getChargingPoints().get(0).addVehicleToPoint(HagenbergSimulationFactory.setupTeslaModel3());
+        stations.get(0).getChargingPoints().get(0).startCharging();
+        
+        ChargingPoint point = stations.get(1).getNextFreeChargingPoint();
+        point.addVehicleToPoint(HagenbergSimulationFactory.setupRenaultZoe());
+        point.setDefaultChargingSpeed(22000);
+        point.startCharging();
+
+        try {
+            Thread.sleep(180000);
+            point.changeChargingSpeedOnPoint(12000);
+            stations.get(0).getChargingPoints().get(0).pauseCharging();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+```
 
 ### Creation of a ChargingStation 
 ```
@@ -52,3 +90,8 @@ point.startCharging();
 ```
 
 ## Update
+I will add some features soon.
+### BMS
+The BMS can influence a charging process and will be added to a vehicle. It will be possible to set a charging maximum and a time cap. Also it will regulate the charging speed over the BMS. 
+### Charging loss
+Currently the charging process is a linear way and will only occur in ideal situation. To encounter this it will be possible to set a charging loss. 

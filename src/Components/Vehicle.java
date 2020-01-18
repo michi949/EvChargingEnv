@@ -9,11 +9,24 @@ public class Vehicle {
     private String vehicleType;
     private ChargingType chargingType;
     private Phases phases ;
+    private String numberPlate;
 
     public Vehicle(Battery battery, String vehicleType, ChargingType chargingType) {
         this.battery = battery;
         this.vehicleType = vehicleType;
         this.chargingType = chargingType;
+        if(chargingType == ChargingType.AC){
+            phases = Phases.three;
+        } else {
+            phases = null;
+        }
+    }
+
+    public Vehicle(Battery battery, String vehicleType, String numberPlate, ChargingType chargingType) {
+        this.battery = battery;
+        this.vehicleType = vehicleType;
+        this.chargingType = chargingType;
+        this.numberPlate = numberPlate;
         if(chargingType == ChargingType.AC){
             phases = Phases.three;
         } else {

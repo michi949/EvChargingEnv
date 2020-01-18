@@ -8,8 +8,7 @@ public class Setup {
         ArrayList<ChargingStation> stations = HagenbergSimulationFactory.setupEnvironmentHagenberg();
 
         stations.get(0).getChargingPoints().get(0).addVehicleToPoint(HagenbergSimulationFactory.setupTeslaModel3());
-        //stations.get(0).getChargingPoints().get(0).startCharging();
-
+        stations.get(0).getChargingPoints().get(0).startCharging();
 
         ChargingPoint point = stations.get(1).getNextFreeChargingPoint();
         point.addVehicleToPoint(HagenbergSimulationFactory.setupRenaultZoe());
@@ -18,8 +17,8 @@ public class Setup {
 
         try {
             Thread.sleep(180000);
-            //point.changeChargingSpeedOnPoint(12000);
-            //stations.get(0).getChargingPoints().get(0).pauseCharging();
+            point.changeChargingSpeedOnPoint(12000);
+            stations.get(0).getChargingPoints().get(0).pauseCharging();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

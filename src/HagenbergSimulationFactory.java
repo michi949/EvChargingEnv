@@ -40,7 +40,7 @@ public class HagenbergSimulationFactory {
     public static Vehicle setupRenaultZoe(){
         double capacity = 22000;
         double currentCapacity = (Math.random() * ((capacity - 3700) + 1)) + 3700;
-        return new Vehicle(new Battery(currentCapacity, capacity), "Renault Zoe", ChargingType.AC);
+        return new Vehicle(new Battery(currentCapacity, capacity), "Renault Zoe", "GM-235FE", ChargingType.AC);
     }
 
     /**

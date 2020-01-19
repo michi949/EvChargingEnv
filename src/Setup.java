@@ -2,6 +2,7 @@ import Components.ChargingPoint;
 import Components.ChargingStation;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Setup {
     public static void main(String[] args){
@@ -14,6 +15,8 @@ public class Setup {
         point.addVehicleToPoint(HagenbergSimulationFactory.setupRenaultZoe());
         point.setDefaultChargingSpeed(22000);
         point.startCharging();
+
+        double test = (double) 1080000 / 3600000;
 
         try {
             Thread.sleep(180000);

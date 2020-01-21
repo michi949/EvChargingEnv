@@ -1,5 +1,6 @@
 import Components.ChargingPoint;
 import Components.ChargingStation;
+import EnergySources.Solar;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,10 @@ public class Setup {
         point.startCharging();
 
         double test = (double) 1080000 / 3600000;
+
+        Solar solar = new Solar(560000, 0.45, 26.0);
+        System.out.println(solar.dailyOutput());
+        System.out.println(solar.hourOutput());
 
         try {
             Thread.sleep(180000);

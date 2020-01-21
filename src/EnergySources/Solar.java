@@ -77,17 +77,14 @@ public class Solar extends Thread{
         double percent = temperatureCoefficient * Math.abs(differenceBetweenTemperature());
 
         if(differenceBetweenTemperature() > 0){
-
+            return (bestCase / 100) * (100 - percent);
         } else {
-
+            return (bestCase / 100) * (100 + percent);
         }
-
-        return 0.0;
     }
 
     public double hourOutput(){
-
-        return 0.0;
+        return dailyOutput() / sunnyHours;
     }
 
     private double differenceBetweenTemperature(){

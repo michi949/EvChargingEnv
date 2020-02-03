@@ -1,12 +1,12 @@
-package Components;
+package ChargingEnviroment;
 
-public class Battery {
+public class EvSimBattery {
     private int id;
     private double currentCapacity;
     private double capacity;
     private double leftOverCapacity;
 
-    public Battery(double currentCapacity, double capacity) {
+    public EvSimBattery(double currentCapacity, double capacity) {
         this.currentCapacity = currentCapacity;
         this.capacity = capacity;
         this.setLeftOverCapacity();

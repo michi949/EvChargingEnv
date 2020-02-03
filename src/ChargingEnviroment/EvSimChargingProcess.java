@@ -1,4 +1,4 @@
-package Components;
+package ChargingEnviroment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,12 +7,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ChargingProcess extends Thread {
+public class EvSimChargingProcess extends Thread {
     private Date startDate;
     private Date updateDate;
     private Date estimatedEndDate;
     private double chargingSpeed;
-    private Vehicle vehicle;
+    private EvSimVehicle evSimVehicle;
     private boolean isCharging;
     int lastLogUpdate = 0;
 
@@ -21,37 +21,37 @@ public class ChargingProcess extends Thread {
         @Override
         public void run() {
             if(isCharging()){
-                if(vehicle.getBattery().getCurrentCapacity() >= vehicle.getBattery().getCapacity()){
+                if(evSimVehicle.getEvSimBattery().getCurrentCapacity() >= evSimVehicle.getEvSimBattery().getCapacity()){
                     finishChargingProcess();
                 }
 
-                double currentCapacity = vehicle.getBattery().getCurrentCapacity();
+                double currentCapacity = evSimVehicle.getEvSimBattery().getCurrentCapacity();
                 double chargingSpeedPerSec = chargingSpeed / 3600;
-                vehicle.getBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
-                if(lastLogUpdate < vehicle.getBattery().getCurrentCapacityInPercent()){
-                    System.out.println("Current charging state is: " + vehicle.getBattery().getCurrentCapacityInPercent() + "%");
-                    lastLogUpdate = vehicle.getBattery().getCurrentCapacityInPercent();
+                evSimVehicle.getEvSimBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
+                if(lastLogUpdate < evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent()){
+                    System.out.println("Current charging state is: " + evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent() + "%");
+                    lastLogUpdate = evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent();
                     //System.out.println("Current capactity of the vehicle: " + round(vehicle.getBattery().getCurrentCapacity(), 2) + "kWh from: " + round(vehicle.getBattery().getCapacity(), 2) + "kWh.");
                 }
             }
         }
     };
 
-    public ChargingProcess(double chargingSpeed, Vehicle vehicle) {
+    public EvSimChargingProcess(double chargingSpeed, EvSimVehicle evSimVehicle) {
         this.chargingSpeed = chargingSpeed;
-        this.vehicle = vehicle;
+        this.evSimVehicle = evSimVehicle;
     }
 
     public double getChargingSpeed() {
         return chargingSpeed;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public EvSimVehicle getEvSimVehicle() {
+        return evSimVehicle;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setEvSimVehicle(EvSimVehicle evSimVehicle) {
+        this.evSimVehicle = evSimVehicle;
     }
 
     public Date getStartDate() {
@@ -98,7 +98,7 @@ public class ChargingProcess extends Thread {
     }
 
     public void startChargingProcess(){
-        if(chargingSpeed == 0 || vehicle == null){
+        if(chargingSpeed == 0 || evSimVehicle == null){
             return;
         }
 
@@ -121,7 +121,7 @@ public class ChargingProcess extends Thread {
     public void finishChargingProcess(){
         isCharging = false;
         timer.purge();
-        System.out.println("Charging process has ended at " + new Date() + "and has a current capacity of " + vehicle.getBattery().getCurrentCapacity());
+        System.out.println("Charging process has ended at " + new Date() + "and has a current capacity of " + evSimVehicle.getEvSimBattery().getCurrentCapacity());
     }
 
     /**
@@ -131,7 +131,7 @@ public class ChargingProcess extends Thread {
     public void estimatePossibleEndDate(){
         //System.out.println(vehicle.getBattery().getLeftOverCapacity());
         //System.out.println(this.getChargingSpeed());
-        double intervalToChargingEnd = vehicle.getBattery().getLeftOverCapacity() / this.getChargingSpeed();
+        double intervalToChargingEnd = evSimVehicle.getEvSimBattery().getLeftOverCapacity() / this.getChargingSpeed();
         Date intervalDate = convertDoubleToDate(intervalToChargingEnd);
         if(intervalDate == null){
             System.out.println("Estimating the possible end Date is not possible.");

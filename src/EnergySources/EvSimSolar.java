@@ -7,7 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Solar extends Thread{
+public class EvSimSolar extends Thread{
     double wattPeak;
     double temperatureCoefficient;
     double sunnyHours; //Hours in ms
@@ -22,7 +22,7 @@ public class Solar extends Thread{
     };
 
 
-    public Solar(double wattPeak, double temperatureCoefficient, double cellTemperature) {
+    public EvSimSolar(double wattPeak, double temperatureCoefficient, double cellTemperature) {
         this.wattPeak = wattPeak;
         this.temperatureCoefficient = temperatureCoefficient;
         this.cellTemperature = cellTemperature;
@@ -31,7 +31,7 @@ public class Solar extends Thread{
         this.start();
     }
 
-    public Solar(double wattPeak, double temperatureCoefficient, long sunnyHoursInMilliSec, double currentTemperature, double cellTemperature) {
+    public EvSimSolar(double wattPeak, double temperatureCoefficient, long sunnyHoursInMilliSec, double currentTemperature, double cellTemperature) {
         this.wattPeak = wattPeak;
         this.temperatureCoefficient = temperatureCoefficient;
         this.sunnyHours = ((double) sunnyHoursInMilliSec / 3600000.0);

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EvChargingEnv:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EvChargingEnv_jar</output-path>
+    <root id="archive" name="EvChargingEnv.jar">
+      <element id="module-output" name="EvChargingEnv" />
+    </root>
+  </artifact>
+</component>

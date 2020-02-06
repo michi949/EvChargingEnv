@@ -13,16 +13,16 @@ To enable the possibility of optimizing it is possible to change the charging po
 A charging station contains some charging points where the evSimVehicle is attached. Most organisations have a couple stations where every station has around 2 charging points.
 To create a station a id and the organisation name is needed. 
 ```
-EvChargingStation station = new EvChargingStation(1,"FH OOE Hagenberg");
+EvSimChargingStation station = new EvSimChargingStation(1,"FH OOE Hagenberg");
 ```
 
 ### Charging Point
 The charging point is attached on a charging station and contains a evSimVehicle and a charging process. It is responsible to start, pause and stop a charging process. Also it managed the connected car. The constructor takes just a id or the id and a evSimVehicle. 
 
 ```
-EvChargingPoint point = new EvChargingPoint(1);
+EvSimChargingPoint point = new EvSimChargingPoint(1);
 //or
-EvChargingPoint point = new EvChargingPoint(1, new EvVehicle(new EvBattery(currentCapacity, capacity), "Renault Zoe", ChargingType.AC));
+EvSimChargingPoint point = new EvSimChargingPoint(1, new EvSimVehicle(new EvSimBattery(currentCapacity, capacity), "Renault Zoe", ChargingType.AC));
 //Manage the evSimVehicle
 point.addVehicleToPoint(Factory.HagenbergSimulationFactory.setupRenaultZoe());
 point.setDefaultChargingSpeed(12000);
@@ -35,14 +35,14 @@ It is possible to calculate the current evSimBattery capacity in percent.
 ```
       double capacity = 22000;
       double currentCapacity = 8000;
-      EvVehicle evSimVehicle = new EvVehicle(new Battery(currentCapacity, capacity), "Renault Zoe", "GM-235FE", ChargingType.AC);
+      EvSimVehicle evSimVehicle = new EvSimVehicle(new EvSimBattery(currentCapacity, capacity), "Renault Zoe", "GM-235FE", ChargingType.AC);
 ```
 
 ### Charging Process
 The charging process is running in an own thread and will update ever second the current capacity of the attached evSimBattery.
 It will also calculate the estimated end time and check frequently if the charging goal is reached.
 ```
-setChargingProcess(new EvChargingProcess(defaultChargingSpeed, this.evSimVehicle));
+setChargingProcess(new EvSimChargingProcess(defaultChargingSpeed, this.evSimVehicle));
 getChargingProcess().startChargingProcess();
 ```
 A charging process will be created atomically when the charging point start charging function is called. With the the given default speed of the the charging point. It is possible to change the default speed before the running one. When a process is running it is possible to change the current charging speed.
@@ -56,12 +56,12 @@ point.changeChargingSpeedOnPoint(12000);
 A quick example how to use the library, i created a factory for my usage where i create some vehicles with the real specifications to test.
 ```
 public static void main(String[] args){
-        ArrayList<EvChargingStation> stations = Factory.HagenbergSimulationFactory.setupEnvironmentHagenberg();
+        ArrayList<EvSimChargingStation> stations = Factory.HagenbergSimulationFactory.setupEnvironmentHagenberg();
 
         stations.get(0).getChargingPoints().get(0).addVehicleToPoint(Factory.HagenbergSimulationFactory.setupTeslaModel3());
         stations.get(0).getChargingPoints().get(0).startCharging();
         
-        EvChargingPoint point = stations.get(1).getNextFreeChargingPoint();
+        EvSimChargingPoint point = stations.get(1).getNextFreeChargingPoint();
         point.addVehicleToPoint(Factory.HagenbergSimulationFactory.setupRenaultZoe());
         point.setDefaultChargingSpeed(22000);
         point.startCharging();
@@ -78,12 +78,12 @@ public static void main(String[] args){
 
 ### Creation of a ChargingStation 
 ```
- ArrayList<EvChargingStation> stations = new ArrayList<>();
+ ArrayList<EvSimChargingStation> stations = new ArrayList<>();
          int chargingPointCounter = 1;
          for(int i = 1; i <= 3; i++){
-             EvChargingStation station = new EvChargingStation(i,"FH OOE Hagenberg");
-             station.getChargingPoints().add(new EvChargingPoint(chargingPointCounter));
-             station.getChargingPoints().add(new EvChargingPoint(chargingPointCounter + 1));
+             EvSimChargingStation station = new EvSimChargingStation(i,"FH OOE Hagenberg");
+             station.getChargingPoints().add(new EvSimChargingPoint(chargingPointCounter));
+             station.getChargingPoints().add(new EvSimChargingPoint(chargingPointCounter + 1));
              chargingPointCounter += 2;
              stations.add(station);
          }

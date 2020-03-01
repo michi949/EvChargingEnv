@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.squareup.okhttp3:benchmarks:3.12.3" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.7.0-rc2" level="project" />
   </component>
 </module>

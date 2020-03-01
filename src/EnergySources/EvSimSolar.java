@@ -108,7 +108,8 @@ public class EvSimSolar extends Thread{
     private void updateWeatherData(){
         if(useWeatherAPI){
             Map<String, Double> map = WeatherConnector.performRequest();
-
+            this.currentTemperature = map.get("temp");
+            this.sunnyHours = map.get("dayLight");
         } else {
             this.currentTemperature =  (Math.random() * ((80.0 - 0.0) + 1)) + 0.0;
             this.sunnyHours = (double) 28800000.0 / 3600000.0;

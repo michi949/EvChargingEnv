@@ -1,5 +1,7 @@
 package EnergySources.Connector;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -14,8 +16,8 @@ import java.util.Map;
  * Request the current weather from a weather api
  */
 public class WeatherConnector {
-    private static final String APIKEY = "e0163b0dc53182f484cfec672c2e3864";
-    private static final String APIPATH = "api.openweathermap.org/data/2.5/weather";
+    private static final String APIKEY = "e0163b0dc53182f484cfec672c2e3864"; //"e0163b0dc53182f484cfec672c2e3864";
+    private static final String APIPATH = "https://api.openweathermap.org/data/2.5/weather?";
 
     public static Map<String, Double> performRequest() {
         OkHttpClient client = new OkHttpClient();
@@ -70,11 +72,30 @@ public class WeatherConnector {
 
     private static Map<String, Double> parseWeatherData(String data){
         Map<String, Double> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
 
         if(data == ""){
             return map;
         }
 
+        try {
+            JsonNode rootNode = mapper.readTree(data);
+            JsonNode mainNode = rootNode.get("main");
+            JsonNode sysNode = rootNode.get("sys");
+            double temperature = mainNode.get("temp").asDouble();
+
+            map.put("temp", temperature);
+
+            long sunrise = sysNode.get("sunrise").asLong() * 1000;
+            long sunset = sysNode.get("sunset").asLong() * 1000;
+
+            double difference = (double) sunset-sunrise;
+            map.put("dayLight", difference);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return map;
+        }
 
 
         return map;

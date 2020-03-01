@@ -1,0 +1,45 @@
+{
+  "coord": {
+    "lon": 16.45,
+    "lat": 48.63
+  },
+  "weather": [
+    {
+      "id": 500,
+      "main": "Rain",
+      "description": "light rain",
+      "icon": "10d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 9.89,
+    "feels_like": 6.71,
+    "temp_min": 8,
+    "temp_max": 11.67,
+    "pressure": 1004,
+    "humidity": 57
+  },
+  "wind": {
+    "speed": 2.1,
+    "deg": 250
+  },
+  "rain": {
+    "3h": 1.06
+  },
+  "clouds": {
+    "all": 100
+  },
+  "dt": 1583069472,
+  "sys": {
+    "type": 1,
+    "id": 6879,
+    "country": "AT",
+    "sunrise": 1583040935,
+    "sunset": 1583080664
+  },
+  "timezone": 3600,
+  "id": 2771557,
+  "name": "Hagenberg",
+  "cod": 200
+}

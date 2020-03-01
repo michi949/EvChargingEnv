@@ -1,8 +1,11 @@
 package EnergySources;
 
+import EnergySources.Connector.WeatherConnector;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Time;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +16,7 @@ public class EvSimSolar extends Thread{
     double sunnyHours; //Hours in ms
     double currentTemperature;
     double cellTemperature;
+    boolean useWeatherAPI;
     private Timer timer;
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -22,12 +26,12 @@ public class EvSimSolar extends Thread{
     };
 
 
-    public EvSimSolar(double wattPeak, double temperatureCoefficient, double cellTemperature) {
+    public EvSimSolar(double wattPeak, double temperatureCoefficient, double cellTemperature, boolean useWeatherAPI) {
         this.wattPeak = wattPeak;
         this.temperatureCoefficient = temperatureCoefficient;
         this.cellTemperature = cellTemperature;
-        this.currentTemperature =  (Math.random() * ((80.0 - 0.0) + 1)) + 0.0;
-        this.sunnyHours = (double) 28800000.0 / 3600000.0;
+        this.useWeatherAPI = useWeatherAPI;
+        this.updateWeatherData();
         this.start();
     }
 
@@ -37,6 +41,7 @@ public class EvSimSolar extends Thread{
         this.sunnyHours = ((double) sunnyHoursInMilliSec / 3600000.0);
         this.currentTemperature = currentTemperature;
         this.cellTemperature = cellTemperature;
+        this.useWeatherAPI = false;
         this.start();
     }
 
@@ -63,6 +68,14 @@ public class EvSimSolar extends Thread{
         this.temperatureCoefficient = temperatureCoefficient;
     }
 
+    public boolean isUseWeatherAPI() {
+        return useWeatherAPI;
+    }
+
+    public void setUseWeatherAPI(boolean useWeatherAPI) {
+        this.useWeatherAPI = useWeatherAPI;
+    }
+
     @Override
     public void run() {
         super.run();
@@ -73,7 +86,6 @@ public class EvSimSolar extends Thread{
 
     public double dailyOutput(){
         double bestCase = wattPeak * sunnyHours;
-
         double percent = temperatureCoefficient * Math.abs(differenceBetweenTemperature());
 
         if(differenceBetweenTemperature() > 0){
@@ -93,5 +105,13 @@ public class EvSimSolar extends Thread{
         return bd.doubleValue();
     }
 
+    private void updateWeatherData(){
+        if(useWeatherAPI){
+            Map<String, Double> map = WeatherConnector.performRequest();
 
+        } else {
+            this.currentTemperature =  (Math.random() * ((80.0 - 0.0) + 1)) + 0.0;
+            this.sunnyHours = (double) 28800000.0 / 3600000.0;
+        }
+    }
 }

@@ -19,7 +19,7 @@ public class Setup {
 
         double test = (double) 1080000 / 3600000;
 
-        EvSimSolar evSimSolar = new EvSimSolar(560000, 0.45, 26.0);
+        EvSimSolar evSimSolar = new EvSimSolar(53000, 0.45, 26.0, true);
         System.out.println(evSimSolar.dailyOutput());
         System.out.println(evSimSolar.hourOutput());
 

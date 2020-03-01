@@ -109,19 +109,19 @@ public class EvSimChargingProcess extends Thread {
             timer.scheduleAtFixedRate(timerTask, 1000 , 1000);
         }
         this.estimatePossibleEndDate();
-        System.out.println("Charging process start time: " + startDate + "with speed " + chargingSpeed + "kW and estimated end time is " + estimatedEndDate);
+        //System.out.println("Charging process start time: " + startDate + "with speed " + chargingSpeed + "kW and estimated end time is " + estimatedEndDate);
         this.start();
     }
 
     public void stopChargingProcess(){
-        System.out.println("Charging process stop time: " + new Date());
+       // System.out.println("Charging process stop time: " + new Date());
         isCharging = false;
     }
 
     public void finishChargingProcess(){
         isCharging = false;
         timer.purge();
-        System.out.println("Charging process has ended at " + new Date() + "and has a current capacity of " + evSimVehicle.getEvSimBattery().getCurrentCapacity());
+        //System.out.println("Charging process has ended at " + new Date() + "and has a current capacity of " + evSimVehicle.getEvSimBattery().getCurrentCapacity());
     }
 
     /**

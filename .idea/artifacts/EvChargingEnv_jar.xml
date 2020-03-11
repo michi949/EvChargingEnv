@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/EvChargingEnv_jar</output-path>
     <root id="archive" name="EvChargingEnv.jar">
       <element id="module-output" name="EvChargingEnv" />
+      <element id="library" level="project" name="com.fasterxml.jackson.core:jackson-databind:2.7.0-rc2" />
+      <element id="library" level="project" name="com.squareup.okhttp3:benchmarks:3.12.3" />
     </root>
   </artifact>
 </component>

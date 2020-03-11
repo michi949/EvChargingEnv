@@ -17,11 +17,12 @@ public class EvSimSolar extends Thread{
     double currentTemperature;
     double cellTemperature;
     boolean useWeatherAPI;
+    int clouds;
     private Timer timer;
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            //currentTemperature = (Math.random() * ((80.0 - 0.0) + 1)) + 0.0;
+            updateWeatherData();
         }
     };
 
@@ -31,6 +32,9 @@ public class EvSimSolar extends Thread{
         this.temperatureCoefficient = temperatureCoefficient;
         this.cellTemperature = cellTemperature;
         this.useWeatherAPI = useWeatherAPI;
+        this.currentTemperature =  0;
+        this.sunnyHours = 0;
+        this.clouds = 0;
         this.updateWeatherData();
         this.start();
     }
@@ -96,7 +100,10 @@ public class EvSimSolar extends Thread{
     }
 
     public double hourOutput(){
-        return dailyOutput() / sunnyHours;
+        double daily =  dailyOutput() / sunnyHours;
+        double onePercent = daily / 100;
+        double possiblePower = onePercent * (100 - this.clouds);
+        return possiblePower;
     }
 
     private double differenceBetweenTemperature(){
@@ -110,9 +117,11 @@ public class EvSimSolar extends Thread{
             Map<String, Double> map = WeatherConnector.performRequest();
             this.currentTemperature = map.get("temp");
             this.sunnyHours = map.get("dayLight");
+            this.clouds = map.get("cloud").intValue();
         } else {
             this.currentTemperature =  (Math.random() * ((80.0 - 0.0) + 1)) + 0.0;
             this.sunnyHours = (double) 28800000.0 / 3600000.0;
+            this.clouds = 35;
         }
     }
 }

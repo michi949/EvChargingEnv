@@ -82,6 +82,7 @@ public class WeatherConnector {
             JsonNode rootNode = mapper.readTree(data);
             JsonNode mainNode = rootNode.get("main");
             JsonNode sysNode = rootNode.get("sys");
+            JsonNode cloudNode = rootNode.get("clouds");
             double temperature = mainNode.get("temp").asDouble();
 
             map.put("temp", temperature);
@@ -91,6 +92,7 @@ public class WeatherConnector {
 
             double difference = (double) sunset-sunrise;
             map.put("dayLight", difference);
+            map.put("cloud", cloudNode.get("all").asDouble());
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -29,7 +29,7 @@ public class EvSimChargingProcess extends Thread {
                 double chargingSpeedPerSec = chargingSpeed / 3600;
                 evSimVehicle.getEvSimBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
                 if(lastLogUpdate < evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent()){
-                    System.out.println("Current charging state is: " + evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent() + "%");
+                    System.out.println("Date: " + new Date() + " | Current charging state is: " + evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent() + "%" + " | Current Capacity: " + evSimVehicle.getEvSimBattery().getCurrentCapacity());
                     lastLogUpdate = evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent();
                     //System.out.println("Current capactity of the vehicle: " + round(vehicle.getBattery().getCurrentCapacity(), 2) + "kWh from: " + round(vehicle.getBattery().getCapacity(), 2) + "kWh.");
                 }
@@ -88,11 +88,11 @@ public class EvSimChargingProcess extends Thread {
 
     public void changeChargingSpeed(double chargingSpeed){
         if(!isCharging()){
-            System.out.println("Charging speed changed to: " + chargingSpeed + "kW.");
+            System.out.println("Charging speed changed to: " + chargingSpeed + "W.");
         } else {
             startDate = new Date();
             estimatePossibleEndDate();
-            System.out.println("Change charging speed to: " + chargingSpeed + "kW. New estimated end time is " + estimatedEndDate);
+            System.out.println("Change charging speed to: " + chargingSpeed + "W.");
         }
         this.chargingSpeed = chargingSpeed;
     }

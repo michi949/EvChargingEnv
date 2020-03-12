@@ -9,6 +9,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,10 @@ import java.util.Map;
 public class WeatherConnector {
     private static final String APIKEY = "e0163b0dc53182f484cfec672c2e3864"; //"e0163b0dc53182f484cfec672c2e3864";
     private static final String APIPATH = "https://api.openweathermap.org/data/2.5/weather?";
+    Date sunrise;
+    Date sunset;
 
-    public static Map<String, Double> performRequest() {
+    public Map<String, Double> performRequest() {
         OkHttpClient client = new OkHttpClient();
 
         String url = null;
@@ -42,7 +45,7 @@ public class WeatherConnector {
     }
 
 
-    public static String getParamsString() throws UnsupportedEncodingException {
+    public String getParamsString() throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
 
         Map<String, String> params = setupParameters();
@@ -60,7 +63,7 @@ public class WeatherConnector {
                 : resultString;
     }
 
-    private static Map<String, String> setupParameters() {
+    private  Map<String, String> setupParameters() {
         Map<String, String> params = new HashMap<>();
 
         params.put("APPID", APIKEY);
@@ -70,7 +73,7 @@ public class WeatherConnector {
         return params;
     }
 
-    private static Map<String, Double> parseWeatherData(String data){
+    private Map<String, Double> parseWeatherData(String data){
         Map<String, Double> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
 
@@ -90,6 +93,9 @@ public class WeatherConnector {
             long sunrise = sysNode.get("sunrise").asLong() * 1000;
             long sunset = sysNode.get("sunset").asLong() * 1000;
 
+            this.sunrise = new Date(sunrise);
+            this.sunset = new Date(sunset);
+
             double difference = (double) sunset-sunrise;
             map.put("dayLight", difference);
             map.put("cloud", cloudNode.get("all").asDouble());
@@ -101,5 +107,21 @@ public class WeatherConnector {
 
 
         return map;
+    }
+
+    public Date getSunrise() {
+        return sunrise;
+    }
+
+    public void setSunrise(Date sunrise) {
+        this.sunrise = sunrise;
+    }
+
+    public Date getSunset() {
+        return sunset;
+    }
+
+    public void setSunset(Date sunset) {
+        this.sunset = sunset;
     }
 }

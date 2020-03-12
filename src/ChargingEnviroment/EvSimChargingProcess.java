@@ -25,9 +25,9 @@ public class EvSimChargingProcess extends Thread {
                     finishChargingProcess();
                 }
 
-                double currentCapacity = evSimVehicle.getEvSimBattery().getCurrentCapacity();
-                double chargingSpeedPerSec = chargingSpeed / 3600;
-                evSimVehicle.getEvSimBattery().setCurrentCapacity(currentCapacity + chargingSpeedPerSec);
+                double currentCapacity = evSimVehicle.getEvSimBattery().getCurrentCapacity() * 3600;
+                double newCapacity = currentCapacity + chargingSpeed;
+                evSimVehicle.getEvSimBattery().setCurrentCapacity(newCapacity/3600);
                 if(lastLogUpdate < evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent()){
                     System.out.println("Date: " + new Date() + " | Current charging state is: " + evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent() + "%" + " | Current Capacity: " + evSimVehicle.getEvSimBattery().getCurrentCapacity());
                     lastLogUpdate = evSimVehicle.getEvSimBattery().getCurrentCapacityInPercent();

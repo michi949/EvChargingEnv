@@ -17,16 +17,16 @@ public class Setup {
         point.setDefaultChargingSpeed(22000);
         point.startCharging();
 
-        double test = (double) 1080000 / 3600000;
-
         EvSimSolar evSimSolar = new EvSimSolar(53000, 0.45, 26.0, true);
         System.out.println(evSimSolar.dailyOutput());
         System.out.println(evSimSolar.hourOutput());
 
+
         try {
-            Thread.sleep(180000);
-            point.changeChargingSpeedOnPoint(12000);
-            stations.get(0).getEvSimChargingPoints().get(0).pauseCharging();
+            Thread.sleep(120000);
+            System.out.println(evSimSolar.hourOutput());
+            //point.changeChargingSpeedOnPoint(12000);
+            // stations.get(0).getEvSimChargingPoints().get(0).pauseCharging();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
